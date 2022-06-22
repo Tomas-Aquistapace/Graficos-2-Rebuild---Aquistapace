@@ -6,81 +6,81 @@ using namespace std;
 
 BaseGame::BaseGame()
 {
-	_window = new Window();
-	_renderer = new Renderer();
+	window = new Window();
+	renderer = new Renderer();
+	input = new Input(window);
 	gameShouldClose = false;
 }
 
 BaseGame::~BaseGame()
 {
-	if (_window != NULL)
-	{
-		delete _window;
+	if (window != NULL) {
+		delete window;
 	}
-	if (_renderer != NULL) 
-	{
-		delete _renderer;
+	if (renderer != NULL) {
+		delete renderer;
+	}
+	if (input != NULL) {
+		delete input;
 	}
 }
 
 void BaseGame::initBaseGame(int screenWidth, int screenHeight, const char* title)
 {
 	glfwInit();
-
-	_window->createWindow(screenWidth, screenHeight, title);
-	glfwMakeContextCurrent(_window->getWindow());
+	window->createWindow(screenWidth, screenHeight, title);
+	glfwMakeContextCurrent(window->getWindow());
 	glewExperimental = GL_TRUE;
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	Input::SetWindow(_window->getWindow());
-	//glfwSetInputMode(_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	_renderer->initVertexShader();
-	_renderer->initFragmentShader();
-	_renderer->initShaderProgram();
+	glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	
+	renderer->initVertexShader();
+	renderer->initFragmentShader();
+	renderer->initShaderProgram();
+	
+	//quitado:
+	//renderer->setPosAttrib();	
+	//renderer->setTextureAttrib();
+	
+	//test VP
+	//renderer->setVP();
 }
 
-int BaseGame::engineLoop(float r, float g, float b, float a)
-{
-	initGame(_renderer);
+const float radius = 10.0f;
 
-	while (!glfwWindowShouldClose(_window->getWindow()) && !gameShouldClose)
+int BaseGame::engineLoop()
+{
+	initGame(renderer);
+
+	while (!glfwWindowShouldClose(window->getWindow()) && !gameShouldClose)
 	{
 		//clear
-		glClearColor(r, g, b, a);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER);
-
 		//game update
-		updateGame(collManager);
-		Input::CheckClearInputList();
-
+		updateGame(collManager,input);
+		//engine input
+		if (input->isKeyDown(GLFW_KEY_ESCAPE))
+		{
+			gameShouldClose = true;
+		}
+		
 		//swap
-		glfwSwapBuffers(_window->getWindow());
+		glfwSwapBuffers(window->getWindow());
 		glfwPollEvents();
 	}
-	_renderer->deleteShaderProgram();
-	_renderer->deleteFragmentShader();
-	_renderer->deleteVertexShader();
+	renderer->deleteShaderProgram();
+	renderer->deleteFragmentShader();
+	renderer->deleteVertexShader();
 	glfwTerminate();
+	
+	//game destroy
+	destroyGame();
 
 	return 0;
-}
-
-void BaseGame::CloseApp()
-{
-	gameShouldClose = true;
-}
-
-void BaseGame::ActivateFPSCamera(Camera* camera, float sensitivity)
-{
-	Input::ActivateFPSCamera(_window->getWindow(), camera, sensitivity);
-}
-
-void BaseGame::DeactivateFPSCamera()
-{
-	Input::DeactivateFPSCamera(_window->getWindow());
 }

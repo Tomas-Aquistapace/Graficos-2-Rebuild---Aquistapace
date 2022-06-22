@@ -1,7 +1,7 @@
 #include "Sprite.h"
 #include "glm/gtc/type_ptr.hpp"
 
-Sprite::Sprite(Renderer* renderer, const char* path, bool transparency) :Entity(renderer)
+Sprite::Sprite(Renderer* renderer, const char* path,bool transparency) :Entity(renderer)
 {
 	rend = renderer;
 	initSprite(path);

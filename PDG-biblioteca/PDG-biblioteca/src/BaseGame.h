@@ -14,26 +14,19 @@
 class SABASAENGINE_API BaseGame
 {
 private:
-	Renderer* _renderer;
+	Renderer* renderer;
 	CollisionManager collManager;
+	Input* input;
 	bool gameShouldClose;
-
 protected:
-	Window* _window;
-
+	Window* window;
 public:
 	modelImporter importer;
 	BaseGame();
 	~BaseGame();
-	
 	void initBaseGame(int screenWidth, int screenHeight, const char* title);
-	int engineLoop(float r, float g, float b, float a);
-
-	void CloseApp();
-	void ActivateFPSCamera(Camera* camera, float sensitivity);
-	void DeactivateFPSCamera();
-
+	int engineLoop();
 	virtual void initGame(Renderer* renderer) = 0;
-	virtual void updateGame(CollisionManager collManager) = 0;
-	//virtual void destroyGame() = 0;
+	virtual void updateGame(CollisionManager collManager,Input* input) = 0;
+	virtual void destroyGame() = 0;
 };
