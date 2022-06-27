@@ -14,13 +14,16 @@ BaseGame::BaseGame()
 
 BaseGame::~BaseGame()
 {
-	if (window != NULL) {
+	if (window != NULL) 
+	{
 		delete window;
 	}
-	if (renderer != NULL) {
+	if (renderer != NULL) 
+	{
 		delete renderer;
 	}
-	if (input != NULL) {
+	if (input != NULL) 
+	{
 		delete input;
 	}
 }
@@ -36,17 +39,8 @@ void BaseGame::initBaseGame(int screenWidth, int screenHeight, const char* title
 	glDepthFunc(GL_LESS);
 
 	glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	
-	renderer->initVertexShader();
-	renderer->initFragmentShader();
+
 	renderer->initShaderProgram();
-	
-	//quitado:
-	//renderer->setPosAttrib();	
-	//renderer->setTextureAttrib();
-	
-	//test VP
-	//renderer->setVP();
 }
 
 const float radius = 10.0f;
@@ -74,9 +68,8 @@ int BaseGame::engineLoop()
 		glfwSwapBuffers(window->getWindow());
 		glfwPollEvents();
 	}
-	renderer->deleteShaderProgram();
-	renderer->deleteFragmentShader();
-	renderer->deleteVertexShader();
+	renderer->stopShader();
+	
 	glfwTerminate();
 	
 	//game destroy

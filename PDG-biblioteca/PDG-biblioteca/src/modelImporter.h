@@ -10,7 +10,7 @@
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma);
 
-class SABASAENGINE_API modelImporter
+class ENGINE_API modelImporter
 {
 private:
 	string directory;

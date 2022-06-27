@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de encabezado\Shader">
+      <UniqueIdentifier>{2d58c706-d83b-4b58-89b1-18e555ea2fe2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseGame.h">
@@ -81,6 +84,9 @@
     <ClInclude Include="src\modelImporter.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shader\Shader.h">
+      <Filter>Archivos de encabezado\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseGame.cpp">
@@ -143,5 +149,16 @@
     <ClCompile Include="src\modelImporter.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader\Shader.cpp">
+      <Filter>Archivos de encabezado\Shader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shader\vertex.shader">
+      <Filter>Archivos de encabezado\Shader</Filter>
+    </None>
+    <None Include="src\Shader\fragment.shader">
+      <Filter>Archivos de encabezado\Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

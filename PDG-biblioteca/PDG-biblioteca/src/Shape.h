@@ -14,7 +14,7 @@ enum ShapeTypes
 	cube
 };
 
-class SABASAENGINE_API Shape : public Entity
+class ENGINE_API Shape : public Entity
 {
 private:
 	void createRectangle();

@@ -2,7 +2,7 @@
 #include "Exports.h"
 #include "Sprite.h"
 
-class SABASAENGINE_API Tile: public Sprite
+class ENGINE_API Tile: public Sprite
 {
 	int _id;
 public:

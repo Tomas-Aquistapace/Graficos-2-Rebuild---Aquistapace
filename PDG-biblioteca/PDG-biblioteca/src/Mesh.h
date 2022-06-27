@@ -12,7 +12,8 @@
 using namespace glm;
 using namespace std;
 
-struct Vertex {
+struct Vertex 
+{
     vec3 Position;
     vec2 TexCoords;
     vec3 Normal;
@@ -20,13 +21,14 @@ struct Vertex {
     vec3 Bitangent;
 };
 
-struct meshTexture {
+struct meshTexture 
+{
     unsigned int id;
     string type;
     string path;
 };
 
-class SABASAENGINE_API Mesh
+class ENGINE_API Mesh
 {
 public:
     vector<Vertex> _vertices;

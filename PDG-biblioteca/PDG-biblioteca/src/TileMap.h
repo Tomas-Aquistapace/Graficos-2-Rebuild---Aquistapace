@@ -4,7 +4,7 @@
 #include <vector>
 #include "Shape.h"
 #include "CollisionManager.h"
-class SABASAENGINE_API TileMap: public Entity
+class ENGINE_API TileMap: public Entity
 {
 	Texture* textureUsed;
 	unsigned int texture;

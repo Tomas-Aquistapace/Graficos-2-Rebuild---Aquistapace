@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class SABASAENGINE_API Animation {
+class ENGINE_API Animation {
 private:
 	int currentFrame;
 	float currentTime;

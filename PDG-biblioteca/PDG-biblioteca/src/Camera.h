@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Renderer.h"
 
-class SABASAENGINE_API Camera
+class ENGINE_API Camera
 {
 protected:
 	glm::vec3 _position;

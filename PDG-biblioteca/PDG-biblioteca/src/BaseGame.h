@@ -11,7 +11,7 @@
 #include "Camera.h"
 #include "Lightning.h"
 
-class SABASAENGINE_API BaseGame
+class ENGINE_API BaseGame
 {
 private:
 	Renderer* renderer;

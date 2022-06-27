@@ -11,7 +11,7 @@ enum LightType
 	spot
 };
 
-class SABASAENGINE_API Lightning
+class ENGINE_API Lightning
 {
 	Renderer* _rend;
 

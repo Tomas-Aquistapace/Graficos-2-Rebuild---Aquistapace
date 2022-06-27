@@ -21,7 +21,7 @@ struct CollisionResult
 	bool bottom;
 };
 
-class SABASAENGINE_API CollisionManager
+class ENGINE_API CollisionManager
 {
 	Collider a;
 	Collider b;

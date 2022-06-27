@@ -6,15 +6,17 @@
 #include <glm/mat4x4.hpp>
 #include <vector>
 #include "Material.h"
+#include "Shader/Shader.h"
 
 #include <string>
 
-class SABASAENGINE_API Renderer
+class ENGINE_API Renderer
 {
 private:
 	GLuint _vertexShader;
 	GLuint _fragmentShader;
-	unsigned int _shaderProgram;
+	Shader* _shader;
+	
 	int _posAttrib;
 	int _textureAttrib;
 	int _normalAttrib;
@@ -22,13 +24,13 @@ private:
 	int texElementsAmount = 2;
 	int normalElementsAmount = 3;
 	int attribElementsAmount = 8;
+	
 	Material* defaultMat;
 	void setMaterial(Material* material);
+
 public:
 	Renderer();
 	~Renderer();
-	void initVertexShader();
-	void initFragmentShader();
 	void initShaderProgram();
 	void creatoVAO(unsigned int &vao);
 	void createVBO(float* vertexDataArray, int arraySize, unsigned int &vbo);
@@ -36,9 +38,7 @@ public:
 	void setPosAttrib();
 	void setTextureAttrib();
 	void setNormalAttrib();
-	void deleteShaderProgram();
-	void deleteFragmentShader();
-	void deleteVertexShader();
+	void stopShader();
 	void drawShape(glm::mat4x4 trs, unsigned int vbo, unsigned int vao, float* vertex, unsigned int size, unsigned int indexSize);
 	void drawShape(glm::mat4x4 trs, unsigned int vbo, unsigned int vao, float* vertex, unsigned int size, unsigned int indexSize, Material* material);
 	unsigned int getShaderProgram();

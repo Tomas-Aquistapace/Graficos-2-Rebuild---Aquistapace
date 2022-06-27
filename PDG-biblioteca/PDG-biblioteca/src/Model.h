@@ -5,7 +5,7 @@
 #include "Entity.h"
 
 
-class SABASAENGINE_API Model : public Entity
+class ENGINE_API Model : public Entity
 {
 public:
 	vector<meshTexture> textures_loaded;
