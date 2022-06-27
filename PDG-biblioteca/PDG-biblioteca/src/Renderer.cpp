@@ -171,11 +171,11 @@ void Renderer::updateView(vec3 position, vec3 target){
 	glUniform3fv(viewPos, 1, value_ptr(position));
 }
 
-void Renderer::updateView(vec3 position, vec3 front, vec3 up)
+void Renderer::updateView(vec3 position, vec3 front, vec3 _up)
 {
 	unsigned int viewLocation = glGetUniformLocation(_shader->GetShader(), "View");
 	mat4 view;
-	view = lookAt(position, position + front, up);
+	view = lookAt(position, position + front, _up);
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, value_ptr(view));
 
 	unsigned int viewPos = glGetUniformLocation(_shader->GetShader(), "viewPos");

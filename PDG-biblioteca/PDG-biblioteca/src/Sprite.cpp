@@ -72,11 +72,11 @@ void Sprite::initSprite(unsigned int newTexture, float scaleX, float scaleY)
 	rend->setTexture(texture);
 }
 
-void Sprite::updateSprite(Timer & timer) {
+void Sprite::updateSprite(Timer & _timer) {
 	if (!_animation) {
 		return;
 	}
-	_animation->update(timer);
+	_animation->update(_timer);
 	_currentFrame = _animation->getCurrentFrame();
 	if (_currentFrame != _prevFrame
 		|| _currentFrame == _animation->getAnimation().size()-1

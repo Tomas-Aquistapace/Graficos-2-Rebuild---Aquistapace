@@ -13,6 +13,7 @@ enum LightType
 
 class ENGINE_API Lightning
 {
+private:
 	Renderer* _rend;
 
 	bool _active;
@@ -37,16 +38,22 @@ class ENGINE_API Lightning
 	LightType _lightType;
 
 	void setLight();
+
 public:
 	int id;
 	Lightning(Renderer* rend);
+
 	void initializePoint(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float linear, float quadratic);
 	void initializeDirectional(glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
 	void initializeSpot(glm::vec3 pos, glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutOff, float linear, float quadratic);
+	
 	void setPos(glm::vec3 newPos);
-	glm::vec3 getPos();
 	void setDir(glm::vec3 newDir);
-	glm::vec3 getDir();
 	void setActiveState(bool newActiveState);
+
+	void draw();
+
 	bool getActiveState();
+	glm::vec3 getPos();
+	glm::vec3 getDir();
 };

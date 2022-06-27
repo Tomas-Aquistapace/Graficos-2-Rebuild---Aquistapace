@@ -35,8 +35,6 @@ void Lightning::initializePoint(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diff
 	_linear = linear;
 	_quadratic = quadratic;
 	_active = true;
-
-	setLight();
 }
 
 void Lightning::initializeDirectional(glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
@@ -49,8 +47,6 @@ void Lightning::initializeDirectional(glm::vec3 dir, glm::vec3 ambient, glm::vec
 	_diffuse = diffuse;
 	_specular = specular;
 	_active = true;
-
-	setLight();
 }
 
 void Lightning::initializeSpot(glm::vec3 pos, glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutOff, float linear, float quadratic)
@@ -68,25 +64,35 @@ void Lightning::initializeSpot(glm::vec3 pos, glm::vec3 dir, glm::vec3 ambient, 
 	_linear = linear;
 	_quadratic = quadratic;
 	_active = true;
-
-	setLight();
 }
+
+// -------------------------
 
 void Lightning::setPos(glm::vec3 newPos)
 {
 	_pos = newPos;
-	setLight();
-}
-
-glm::vec3 Lightning::getPos() 
-{
-	return _pos;
 }
 
 void Lightning::setDir(glm::vec3 newDir)
 {
 	_dir = newDir;
+}
+
+void Lightning::setActiveState(bool newActiveState)
+{
+	_active = newActiveState;
+}
+
+void Lightning::draw()
+{
 	setLight();
+}
+
+// -------------------------
+
+bool Lightning::getActiveState()
+{
+	return _active;
 }
 
 glm::vec3 Lightning::getDir()
@@ -94,14 +100,7 @@ glm::vec3 Lightning::getDir()
 	return _dir;
 }
 
-void Lightning::setActiveState(bool newActiveState)
+glm::vec3 Lightning::getPos() 
 {
-	_active = newActiveState;
-
-	setLight();
-}
-
-bool Lightning::getActiveState()
-{
-	return _active;
+	return _pos;
 }

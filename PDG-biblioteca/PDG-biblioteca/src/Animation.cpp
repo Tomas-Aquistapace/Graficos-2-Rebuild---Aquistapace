@@ -67,9 +67,9 @@ void Animation::addAnimation(float timeToAnimate)
 	}
 }
 
-void Animation::update(Timer& timer)
+void Animation::update(Timer& _timer)
 {
-	currentTime += (timer.getDT());
+	currentTime += (_timer.getDT());
 
 	while (currentTime >= timeLength)
 	{

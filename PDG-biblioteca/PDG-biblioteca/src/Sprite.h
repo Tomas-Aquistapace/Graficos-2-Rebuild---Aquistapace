@@ -47,7 +47,7 @@ public:
 	Sprite(Renderer* renderer, unsigned int newTexture, bool transparency, float newWidth, float newHeight);
 	~Sprite();
 	void draw();
-	void updateSprite(Timer& timer);
+	void updateSprite(Timer& _timer);
 	void setAnimation(Animation* animation) { _animation = animation; }
 	void setTextureCoordinates(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3);
 	float width;

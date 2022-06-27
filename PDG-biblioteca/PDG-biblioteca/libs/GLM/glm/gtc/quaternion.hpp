@@ -148,7 +148,7 @@ namespace glm
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL qua<T, Q> quatLookAt(
 		vec<3, T, Q> const& direction,
-		vec<3, T, Q> const& up);
+		vec<3, T, Q> const& _up);
 
 	/// Build a right-handed look at quaternion.
 	///
@@ -157,7 +157,7 @@ namespace glm
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL qua<T, Q> quatLookAtRH(
 		vec<3, T, Q> const& direction,
-		vec<3, T, Q> const& up);
+		vec<3, T, Q> const& _up);
 
 	/// Build a left-handed look at quaternion.
 	///
@@ -166,7 +166,7 @@ namespace glm
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL qua<T, Q> quatLookAtLH(
 		vec<3, T, Q> const& direction,
-		vec<3, T, Q> const& up);
+		vec<3, T, Q> const& _up);
 	/// @}
 } //namespace glm
 
