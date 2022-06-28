@@ -8,17 +8,21 @@
 #include "TileMap.h"
 #include "modelImporter.h"
 #include "Camera.h"
+#include "LightManager.h"
 #include "Lightning.h"
+
+using namespace glm;
 
 class ENGINE_API BaseGame
 {
 private:
-	Renderer* renderer;
-	CollisionManager collManager;
-	bool gameShouldClose;
+	Renderer* _renderer;
+	CollisionManager _collManager;
+	bool _gameShouldClose;
 
 protected:
 	Window* _window;
+	LightManager* _lightManager;
 
 public:
 	modelImporter importer;

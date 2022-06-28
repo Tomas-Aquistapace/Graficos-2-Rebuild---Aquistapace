@@ -21,17 +21,14 @@ void Game::initGame(Renderer* renderer)
 	_timer = new Timer();
 	_timer->start();
 
-	_lightA = new Lightning(renderer);
-	_lightA->initializeSpot(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f), glm::radians(5.0f), 0.09f, 0.032f);
-	_lightA->setActiveState(false);
+	_lightManager->addDirectional(renderer, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.1f), glm::vec3(0.5f), glm::vec3(0.5f));
+	_lightManager->getDirectionalLight(0)->setActiveState(false);
 
-	_lightB = new Lightning(renderer);
-	_lightB->initializePoint(glm::vec3(0.0f, 5.0f, 5.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f), 0.09f, 0.032f);
-	_lightB->setActiveState(false);
+	_lightManager->addPoints(renderer, vec3(0.0f, 5.0f, 5.0f), vec3(0.1f, 0.1f, 0.1f), vec3(0.5f, 0.5f, 0.5f), vec3(1.0f), 0.09f, 0.032f);
+	_lightManager->getPointLight(0)->setActiveState(false);
 
-	_lightC = new Lightning(renderer);
-	_lightC->initializeDirectional(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.1f), glm::vec3(0.5f), glm::vec3(0.5f));
-	_lightC->setActiveState(false);
+	_lightManager->addSpots(renderer, vec3(0.0f, 0.0f, 5.0f), vec3(0.0f, 0.0f, -1.0f), vec3(0.1f, 0.1f, 0.1f), vec3(0.5f, 0.5f, 0.5f), vec3(1.0f), radians(5.0f), 0.09f, 0.032f);
+	_lightManager->getSpotLight(0)->setActiveState(false);
 
 	importer.loadModel("res/Models/Knuckles/Knuckles.fbx", false, renderer);
 	importer.loadModel("res/Models/Gun_dae/Gun.dae", false, renderer);
@@ -87,32 +84,30 @@ void Game::updateGame(CollisionManager collManager)
 	// Turn Off/On the Lights:
 	if (Input::GetKeyDown(Keycode::ALPHA1))
 	{
-		_lightA->setActiveState(!_lightA->getActiveState());
+		_lightManager->getDirectionalLight(0)->setActiveState(!_lightManager->getDirectionalLight(0)->getActiveState());
 	}
 	if (Input::GetKeyDown(Keycode::ALPHA2))
 	{
-		_lightB->setActiveState(!_lightB->getActiveState());
+		_lightManager->getPointLight(0)->setActiveState(!_lightManager->getPointLight(0)->getActiveState());
 	}
 	if (Input::GetKeyDown(Keycode::ALPHA3))
 	{
-		_lightC->setActiveState(!_lightC->getActiveState());
+		_lightManager->getSpotLight(0)->setActiveState(!_lightManager->getSpotLight(0)->getActiveState());
 	}
 
 	// Camera Movement:
 	vec3 cameraMovement = vec3(camSpeedX, camSpeedY, camSpeedZ) * 3.0f * _timer->getDT();
 	_camera->moveOnLocal(cameraMovement);
 
-	_lightA->setPos(_camera->getPosition());
-	_lightA->setDir(_camera->getFront());
+	_lightManager->getSpotLight(0)->setPos(_camera->getPosition());
+	_lightManager->getSpotLight(0)->setDir(_camera->getFront());
 	
 	// Draw:
 	importer.models_Loaded[0]->Draw();
 	importer.models_Loaded[1]->Draw();
 	importer.models_Loaded[2]->Draw();
 
-	_lightA->draw();
-	_lightB->draw();
-	_lightC->draw();
+	_lightManager->drawLights();
 
 	// Timer:
 	_timer->updateTimer();
@@ -122,7 +117,4 @@ void Game::destroyGame()
 {
 	if (_timer) delete _timer;
 	if (_camera) delete _camera;
-	if (_lightA) delete _lightA;
-	if (_lightB) delete _lightB;
-	if (_lightC) delete _lightC;
 }

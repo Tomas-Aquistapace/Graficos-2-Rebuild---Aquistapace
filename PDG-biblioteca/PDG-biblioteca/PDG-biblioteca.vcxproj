@@ -167,6 +167,7 @@ copy /Y "$(ProjectDir)libs\ASSIMP\lib\assimp-vc140-mt.dll" "$(OutDir)"
     <ClInclude Include="src\Exports.h" />
     <ClInclude Include="src\Frame.h" />
     <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\LightManager.h" />
     <ClInclude Include="src\Lightning.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Mesh.h" />
@@ -190,6 +191,7 @@ copy /Y "$(ProjectDir)libs\ASSIMP\lib\assimp-vc140-mt.dll" "$(OutDir)"
     <ClCompile Include="src\CollisionManager.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\LightManager.cpp" />
     <ClCompile Include="src\Lightning.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />

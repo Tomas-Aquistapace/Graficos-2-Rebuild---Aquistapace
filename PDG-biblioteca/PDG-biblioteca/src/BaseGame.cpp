@@ -1,14 +1,15 @@
 #include "BaseGame.h"
 #include <iostream>
-//#include <glm/ext/matrix_clip_space.hpp>
 
 using namespace std;
 
 BaseGame::BaseGame()
 {
+	_renderer = new Renderer();
 	_window = new Window();
-	renderer = new Renderer();
-	gameShouldClose = false;
+	_lightManager = new LightManager();
+
+	_gameShouldClose = false;
 }
 
 BaseGame::~BaseGame()
@@ -17,9 +18,13 @@ BaseGame::~BaseGame()
 	{
 		delete _window;
 	}
-	if (renderer != NULL) 
+	if (_renderer != NULL) 
 	{
-		delete renderer;
+		delete _renderer;
+	}
+	if (_lightManager != NULL)
+	{
+		delete _lightManager;
 	}
 }
 
@@ -35,16 +40,16 @@ void BaseGame::initBaseGame(int screenWidth, int screenHeight, const char* title
 
 	Input::SetWindow(_window->getWindow());
 
-	renderer->initShaderProgram();
+	_renderer->initShaderProgram();
 }
 
 const float radius = 10.0f;
 
 int BaseGame::engineLoop(float r, float g, float b, float a)
 {
-	initGame(renderer);
+	initGame(_renderer);
 
-	while (!glfwWindowShouldClose(_window->getWindow()) && !gameShouldClose)
+	while (!glfwWindowShouldClose(_window->getWindow()) && !_gameShouldClose)
 	{
 		//clear
 		glClearColor(r, g, b, a);
@@ -53,7 +58,7 @@ int BaseGame::engineLoop(float r, float g, float b, float a)
 		glClear(GL_DEPTH_BUFFER);
 		
 		//game update
-		updateGame(collManager);
+		updateGame(_collManager);
 
 		//engine input
 		Input::CheckClearInputList();
@@ -62,7 +67,7 @@ int BaseGame::engineLoop(float r, float g, float b, float a)
 		glfwSwapBuffers(_window->getWindow());
 		glfwPollEvents();
 	}
-	renderer->stopShader();
+	_renderer->stopShader();
 	
 	glfwTerminate();
 	
@@ -74,7 +79,7 @@ int BaseGame::engineLoop(float r, float g, float b, float a)
 
 void BaseGame::exitApplication()
 {
-	gameShouldClose = true;
+	_gameShouldClose = true;
 }
 
 void BaseGame::activateFPSCamera(Camera* camera, float sensitivity)
