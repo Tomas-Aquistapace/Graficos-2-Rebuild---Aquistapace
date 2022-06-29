@@ -1,7 +1,7 @@
 #include "Shape.h"
 #include "glm/gtc/type_ptr.hpp"
 
-Shape::Shape(ShapeTypes shapeType, Renderer* renderer):Entity(renderer)
+Shape::Shape(ShapeTypes shapeType, string const& path, Renderer* renderer):Entity(renderer)
 {
 	rend = renderer;
 	_shapeType = shapeType;
@@ -9,14 +9,14 @@ Shape::Shape(ShapeTypes shapeType, Renderer* renderer):Entity(renderer)
 	switch (_shapeType)
 	{
 	case triangle:
-		createTriangle();
+		createTriangle(path);
 		break;
 	case cube:
-		createCube();
+		createCube(path);
 		break;
 	default:
 	case rectangle:
-		createRectangle();
+		createRectangle(path);
 		break;
 	}
 	mat = new Material();
@@ -26,7 +26,7 @@ Shape::Shape(ShapeTypes shapeType, Renderer* renderer):Entity(renderer)
 	mat->_shininess = 32.0f;
 }
 
-Shape::Shape(ShapeTypes shapeType, Material newMat, Renderer* renderer) :Entity(renderer)
+Shape::Shape(ShapeTypes shapeType, string const& path, Material newMat, Renderer* renderer) :Entity(renderer)
 {
 	rend = renderer;
 	_shapeType = shapeType;
@@ -34,14 +34,14 @@ Shape::Shape(ShapeTypes shapeType, Material newMat, Renderer* renderer) :Entity(
 	switch (_shapeType)
 	{
 	case triangle:
-		createTriangle();
+		createTriangle(path);
 		break;
 	case cube:
-		createCube();
+		createCube(path);
 		break;
 	default:
 	case rectangle:
-		createRectangle();
+		createRectangle(path);
 		break;
 	}
 	mat = new Material(newMat._ambient,newMat._diffuse,newMat._specular,newMat._shininess);
@@ -53,7 +53,7 @@ Shape::~Shape()
 	if (mat)delete mat;
 }
 
-void Shape::createCube()
+void Shape::createCube(string const& path)
 {
 	vertexAmount = 288;
 	indexAmount = 36;
@@ -83,13 +83,13 @@ void Shape::createCube()
 	rend->creatoVAO(vao);
 	rend->createVBO(vertexToUse, vertexAmount, vbo);
 	rend->createEBO(indicesData, indexAmount, ebo);
-	Texture* texture = new Texture("res/white.png");
+	Texture* texture = new Texture(path);
 	texture->Bind(0);
 	defaultTexture = texture->getTex();
 	rend->setTexture(defaultTexture);
 }
 
-void Shape::createRectangle()
+void Shape::createRectangle(string const& path)
 {
 	vertexAmount = 32;
 	indexAmount = 6;
@@ -104,13 +104,13 @@ void Shape::createRectangle()
 	rend->creatoVAO(vao);
 	rend->createVBO(vertexToUse, vertexAmount, vbo);
 	rend->createEBO(indicesData, indexAmount, ebo);
-	Texture* texture = new Texture("res/white.png");
+	Texture* texture = new Texture(path);
 	texture->Bind(0);
 	defaultTexture = texture->getTex();
 	rend->setTexture(defaultTexture);
 }
 
-void Shape::createTriangle()
+void Shape::createTriangle(string const& path)
 {
 	vertexAmount = 24;
 	indexAmount = 3;
@@ -124,7 +124,7 @@ void Shape::createTriangle()
 	rend->creatoVAO(vao);
 	rend->createVBO(vertexToUse, vertexAmount, vbo);
 	rend->createEBO(indicesData,indexAmount,ebo);
-	Texture* texture = new Texture("res/white.png");
+	Texture* texture = new Texture(path);
 	texture->Bind(0);
 	defaultTexture = texture->getTex();
 	rend->setTexture(defaultTexture);

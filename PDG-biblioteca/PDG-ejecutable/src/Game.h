@@ -5,7 +5,6 @@ class Game: BaseGame
 {
 private:
 	Timer* _timer;
-
 	Camera* _camera;
 
 	float camSpeedX = 0.0f;

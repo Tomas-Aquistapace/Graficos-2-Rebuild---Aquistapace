@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Material.h"
 
+#include <string>
+
 using namespace glm;
 
 enum ShapeTypes
@@ -17,11 +19,6 @@ enum ShapeTypes
 class ENGINE_API Shape : public Entity
 {
 private:
-	void createRectangle();
-	void createTriangle();
-	void createCube();
-	unsigned int vertexAmount = 32;
-	unsigned int indexAmount = 6;
 	float recVerticesData[32] =
 	{
 		 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f,  0.0f,  -1.0f,
@@ -67,17 +64,28 @@ private:
 		 0.5f,  0.5f,  0.5f,    1.0f, 1.0f,      0.0f,  1.0f,  0.0f, //22
 		-0.5f,  0.5f,  0.5f,    1.0f, 0.0f,      0.0f,  1.0f,  0.0f, //23
 	};
+	
+	unsigned int vertexAmount = 32;
+	unsigned int indexAmount = 6;
 	unsigned int vao;
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int defaultTexture;
-	ShapeTypes _shapeType;
+
 	float* vertexToUse;
+	
+	ShapeTypes _shapeType;
 	Material* mat;
+	
+	void createRectangle(string const& path);
+	void createTriangle(string const& path);
+	void createCube(string const& path);
+
 public:
-	Shape(ShapeTypes shapeType, Renderer* renderer);
-	Shape(ShapeTypes shapeType, Material newMat, Renderer* renderer);
+	Shape(ShapeTypes shapeType, string const& path, Renderer* renderer);
+	Shape(ShapeTypes shapeType, string const& path, Material newMat, Renderer* renderer);
 	~Shape();
+
 	void draw();
 	float width;
 	float height;

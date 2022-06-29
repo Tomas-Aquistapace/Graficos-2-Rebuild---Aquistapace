@@ -9,7 +9,6 @@
 #include "modelImporter.h"
 #include "Camera.h"
 #include "LightManager.h"
-#include "Lightning.h"
 
 using namespace glm;
 
@@ -23,9 +22,9 @@ private:
 protected:
 	Window* _window;
 	LightManager* _lightManager;
+	modelImporter importer;
 
 public:
-	modelImporter importer;
 	BaseGame();
 	~BaseGame();
 	
