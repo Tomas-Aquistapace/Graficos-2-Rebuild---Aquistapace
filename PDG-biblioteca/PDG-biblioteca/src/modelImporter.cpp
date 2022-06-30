@@ -1,8 +1,9 @@
 #include "ModelImporter.h"
 
+string directory;
+
 void ModelImporter::loadModel(string const& path, bool flipUVs, MyModel& model)
 {
-	//models_Loaded.push_back(new Model(rend,false));
 	stbi_set_flip_vertically_on_load(flipUVs);
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -127,7 +128,7 @@ vector<meshTexture> ModelImporter::loadMaterialTextures(aiMaterial* mat, aiTextu
 		{
 
 			meshTexture texture;
-			texture.id = TextureFromFile(str.C_Str(), this->directory, false);
+			texture.id = TextureFromFile(str.C_Str(), directory, false);
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);
@@ -184,7 +185,3 @@ unsigned int ModelImporter::TextureFromFile(const char* path, const string& dire
 	}
 	return textureID;
 }
-
-//modelImporter::~modelImporter() {
-//	models_Loaded.clear();
-//}

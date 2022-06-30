@@ -5,7 +5,7 @@ Model::Model(Renderer* rend, string const& path, bool flipUVs, bool gamma) : gam
 {
 	_myModel.renderer = rend;
 
-	_importer.loadModel(path, flipUVs, _myModel);
+	ModelImporter::loadModel(path, flipUVs, _myModel);
 }
 
 void Model::Draw()
