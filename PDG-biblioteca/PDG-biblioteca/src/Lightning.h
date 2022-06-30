@@ -22,6 +22,8 @@ private:
 	static int pointLights;
 	static int spotLights;
 
+	glm::vec3 _color;
+
 	glm::vec3 _pos;
 	glm::vec3 _dir;
 
@@ -37,8 +39,6 @@ private:
 
 	LightType _lightType;
 
-	void setLight();
-
 public:
 	int id;
 	Lightning(Renderer* rend);
@@ -50,6 +50,7 @@ public:
 	void setPos(glm::vec3 newPos);
 	void setDir(glm::vec3 newDir);
 	void setActiveState(bool newActiveState);
+	void setColor(float r, float g, float b);
 
 	void draw();
 

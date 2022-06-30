@@ -1,9 +1,8 @@
-#include "modelImporter.h"
+#include "ModelImporter.h"
 
-
-void modelImporter::loadModel(string const& path, bool flipUVs, Renderer* rend)
+void ModelImporter::loadModel(string const& path, bool flipUVs, MyModel& model)
 {
-	models_Loaded.push_back(new Model(rend,false));
+	//models_Loaded.push_back(new Model(rend,false));
 	stbi_set_flip_vertically_on_load(flipUVs);
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -14,23 +13,23 @@ void modelImporter::loadModel(string const& path, bool flipUVs, Renderer* rend)
 	}
 	directory = path.substr(0, path.find_last_of('/'));
 
-	processNode(scene->mRootNode, scene);
+	processNode(scene->mRootNode, scene, model);
 }
 
-void modelImporter::processNode(aiNode* node, const aiScene* scene)
+void ModelImporter::processNode(aiNode* node, const aiScene* scene, MyModel& model)
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		models_Loaded.back()->meshes.push_back(processMesh(mesh, scene));
+		model.meshes.push_back(processMesh(mesh, scene, model));
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		processNode(node->mChildren[i], scene);
+		processNode(node->mChildren[i], scene, model);
 	}
 }
 
-Mesh modelImporter::processMesh(aiMesh* mesh, const aiScene* scene)
+Mesh ModelImporter::processMesh(aiMesh* mesh, const aiScene* scene, MyModel& model)
 {
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
@@ -86,27 +85,27 @@ Mesh modelImporter::processMesh(aiMesh* mesh, const aiScene* scene)
 	}
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-	vector<meshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+	vector<meshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", model);
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-	vector<meshTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	if (specularMaps.empty()) models_Loaded.back()->hasSpecularMaps = false;
-	else models_Loaded.back()->hasSpecularMaps = true;
+	vector<meshTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular", model);
+	if (specularMaps.empty()) model.hasSpecularMaps = false;
+	else model.hasSpecularMaps = true;
 
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
 	// NORMAL USES HEIGHT INSTEAD OF NORMALS
-	vector<meshTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+	vector<meshTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal", model);
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
 	// HEIGHT USES AMBIENT INSTEAD OF HEIGHT 
-	vector<meshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+	vector<meshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height", model);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	return Mesh(vertices, indices, textures, models_Loaded.back()->hasSpecularMaps, models_Loaded.back()->_rend);
+	return Mesh(vertices, indices, textures, model.hasSpecularMaps, model.renderer);
 }
 
-vector<meshTexture> modelImporter::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
+vector<meshTexture> ModelImporter::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName, MyModel& model)
 {
 	vector<meshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -115,11 +114,11 @@ vector<meshTexture> modelImporter::loadMaterialTextures(aiMaterial* mat, aiTextu
 		mat->GetTexture(type, i, &str);
 		cout << str.C_Str() << endl;
 		bool skip = false;
-		for (unsigned int j = 0; j < models_Loaded.back()->textures_loaded.size(); j++)
+		for (unsigned int j = 0; j < model.textures_loaded.size(); j++)
 		{
-			if (std::strcmp(models_Loaded.back()->textures_loaded[j].path.data(), str.C_Str()) == 0)
+			if (std::strcmp(model.textures_loaded[j].path.data(), str.C_Str()) == 0)
 			{
-				textures.push_back(models_Loaded.back()->textures_loaded[j]);
+				textures.push_back(model.textures_loaded[j]);
 				skip = true;
 				break;
 			}
@@ -132,13 +131,13 @@ vector<meshTexture> modelImporter::loadMaterialTextures(aiMaterial* mat, aiTextu
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);
-			models_Loaded.back()->textures_loaded.push_back(texture);
+			model.textures_loaded.push_back(texture);
 		}
 	}
 	return textures;
 }
 
-unsigned int TextureFromFile(const char* path, const string& directory, bool gamma)
+unsigned int ModelImporter::TextureFromFile(const char* path, const string& directory, bool gamma)
 {
 	string filename = string(path);
 	filename = directory + '/' + filename;
@@ -186,6 +185,6 @@ unsigned int TextureFromFile(const char* path, const string& directory, bool gam
 	return textureID;
 }
 
-modelImporter::~modelImporter() {
-	models_Loaded.clear();
-}
+//modelImporter::~modelImporter() {
+//	models_Loaded.clear();
+//}

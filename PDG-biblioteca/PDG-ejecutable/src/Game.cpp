@@ -4,6 +4,9 @@ Game::Game()
 {
 	_timer = NULL;
 	_camera = NULL;
+	_model1 = NULL;
+	_model2 = NULL;
+	_model3 = NULL;
 }
 
 Game ::~Game()
@@ -27,20 +30,22 @@ void Game::initGame(Renderer* renderer)
 
 	_lightManager->addPoints(renderer, vec3(0.0f, 5.0f, 5.0f), vec3(0.1f, 0.1f, 0.1f), vec3(0.5f, 0.5f, 0.5f), vec3(1.0f), 0.09f, 0.032f);
 	_lightManager->getPointLight(0)->setActiveState(false);
+	_lightManager->getPointLight(0)->setColor(0.1f, 0, 1);
 
 	_lightManager->addSpots(renderer, vec3(0), vec3(0), vec3(0.1f, 0.1f, 0.1f), vec3(0.5f, 0.5f, 0.5f), vec3(1.0f), radians(12.5f), 0.3f, 0.1f);
 	_lightManager->getSpotLight(0)->setActiveState(false);
+	_lightManager->getSpotLight(0)->setColor(1, 0, 0.1f);
 
-	importer.loadModel("res/Models/Knuckles/Knuckles.fbx", false, renderer);
-	importer.loadModel("res/Models/manMesh/FinalBaseMesh.obj", false, renderer);
-	importer.loadModel("res/Models/backpack/backpack.obj", true, renderer);
+	_model1 = new Model(renderer, "res/Models/Knuckles/Knuckles.fbx", false, false);
+	_model2 = new Model(renderer, "res/Models/manMesh/FinalBaseMesh.obj", false, false);
+	_model3 = new Model(renderer, "res/Models/backpack/backpack.obj", true, false);
 
-	importer.models_Loaded[0]->setPosition(vec3(0.0f, 0.0f, -8.0f));
-	importer.models_Loaded[0]->setRotation(vec3(270.0f, 0.0f, 0.0f));
-	importer.models_Loaded[1]->setPosition(vec3(0.0f, -10.0f, 5.0f));
-	importer.models_Loaded[1]->setRotation(vec3(270.0f, 0.0f, 0.0f));
-	importer.models_Loaded[1]->setScale(vec3(2.0f, 2.0f, 2.0f));
-	importer.models_Loaded[2]->setPosition(vec3(5.0f, 0.0f, -5.0f));
+	_model1->setPosition(vec3(0.0f, 0.0f, -8.0f));
+	_model1->setRotation(vec3(270.0f, 0.0f, 0.0f));
+	_model2->setPosition(vec3(0.0f, -10.0f, 5.0f));
+	_model2->setRotation(vec3(270.0f, 0.0f, 0.0f));
+	_model2->setScale(vec3(1.0f, 1.0f, 1.0f));
+	_model3->setPosition(vec3(5.0f, 0.0f, -5.0f));
 
 	_camera = new Camera(renderer);
 	_camera->setPosition(glm::vec3(0.0f, 0.0f, 10.0f));
@@ -48,9 +53,9 @@ void Game::initGame(Renderer* renderer)
 	activateFPSCamera(_camera, 0.05f);
 }
 
-//	Separar el modelImp para que no funcione como un manager 
-//	Cambiar el color de las luces
-//	Permitir que se cambien las trans con las teclas
+//	Separar el modelImp para que no funcione como un manager --- READY
+//	Cambiar el color de las luces --- READY
+//	Permitir que se cambien las trans con las teclas --- READY
 
 void Game::updateGame(CollisionManager collManager)
 {
@@ -86,6 +91,32 @@ void Game::updateGame(CollisionManager collManager)
 		camSpeedX = 0;
 	}
 
+	// Input Scale:
+	if (Input::GetKey(Keycode::G))
+	{
+		_model1->setScale(_model1->getScale() - vec3(0.01f,0,0));
+	}
+	else if (Input::GetKey(Keycode::H))
+	{
+		_model1->setScale(_model1->getScale() - vec3(0,0.01f,0));
+	}
+	else if (Input::GetKey(Keycode::J))
+	{
+		_model1->setScale(_model1->getScale() - vec3(0,0,0.01f));
+	}
+	else if (Input::GetKey(Keycode::T))
+	{
+		_model1->setScale(_model1->getScale() + vec3(0.01f,0,0));
+	}
+	else if (Input::GetKey(Keycode::Y))
+	{
+		_model1->setScale(_model1->getScale() + vec3(0,0.01f,0));
+	}
+	else if (Input::GetKey(Keycode::U))
+	{
+		_model1->setScale(_model1->getScale() + vec3(0,0,0.01f));
+	}
+
 	// Turn Off/On the Lights:
 	if (Input::GetKeyDown(Keycode::ALPHA1))
 	{
@@ -107,13 +138,13 @@ void Game::updateGame(CollisionManager collManager)
 	_lightManager->getSpotLight(0)->setPos(_camera->getPosition());
 	_lightManager->getSpotLight(0)->setDir(_camera->getFront());
 	
-	importer.models_Loaded[1]->setRotationY(importer.models_Loaded[1]->getRotation().y + 0.025f);
-	importer.models_Loaded[2]->setRotationZ(importer.models_Loaded[2]->getRotation().z + 0.15f);
+	_model2->setRotationY(_model2->getRotation().y + 0.025f);
+	_model3->setRotationZ(_model3->getRotation().z + 0.15f);
 	
 	// Draw:
-	importer.models_Loaded[0]->Draw();
-	importer.models_Loaded[1]->Draw();
-	importer.models_Loaded[2]->Draw();
+	_model1->Draw();
+	_model2->Draw();
+	_model3->Draw();
 
 	_lightManager->drawLights();
 
@@ -125,4 +156,7 @@ void Game::destroyGame()
 {
 	if (_timer) delete _timer;
 	if (_camera) delete _camera;
+	if (_model1) delete _model1;
+	if (_model2) delete _model2;
+	if (_model3) delete _model3;
 }

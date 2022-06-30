@@ -6,7 +6,7 @@
 #include "Shape.h"
 #include "Sprite.h"
 #include "TileMap.h"
-#include "modelImporter.h"
+#include "Model.h"
 #include "Camera.h"
 #include "LightManager.h"
 
@@ -22,7 +22,6 @@ private:
 protected:
 	Window* _window;
 	LightManager* _lightManager;
-	modelImporter importer;
 
 public:
 	BaseGame();

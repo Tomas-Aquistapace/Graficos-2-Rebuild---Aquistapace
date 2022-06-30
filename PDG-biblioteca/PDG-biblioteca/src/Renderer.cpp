@@ -199,7 +199,7 @@ void Renderer::setMaterial(Material* material)
 	glUniform1f(uniformMatShin, material->_shininess);
 }
 
-void Renderer::updateLight(glm::vec3 position, glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic, float cutOff, unsigned int lightKind, bool activeState, int id)
+void Renderer::updateLight(glm::vec3 position, glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic, float cutOff, unsigned int lightKind, bool activeState, int id, glm::vec3 color)
 {
 	string dirLightStr = "dirLight";
 	string pointLightStr = "pointLight";
@@ -214,44 +214,48 @@ void Renderer::updateLight(glm::vec3 position, glm::vec3 direction, glm::vec3 am
 	switch (lightKind)
 	{
 	case 0:
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr+".position").c_str()), 1, value_ptr(position));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr+".ambient").c_str()), 1, value_ptr(ambient));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr+".diffuse").c_str()), 1, value_ptr(diffuse));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr+".specular").c_str()), 1, value_ptr(specular));
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(testLightStr+".initialized").c_str()), activeState);
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(testLightStr+".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr + ".position").c_str()), 1, value_ptr(position));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr + ".ambient").c_str()), 1, value_ptr(ambient));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr + ".diffuse").c_str()), 1, value_ptr(diffuse));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr + ".specular").c_str()), 1, value_ptr(specular));
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(testLightStr + ".initialized").c_str()), activeState);
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(testLightStr + ".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(testLightStr + ".color").c_str()), 1, value_ptr(color));
 		break;
 	case 1:
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr+".position").c_str()), 1, value_ptr(position));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr+".ambient").c_str()), 1, value_ptr(ambient));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr+".diffuse").c_str()), 1, value_ptr(diffuse));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr+".specular").c_str()), 1, value_ptr(specular));
-		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr+".constant").c_str()), constant);// 1.0f
-		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr+".linear").c_str()), linear);// 0.09f
-		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr+".quadratic").c_str()), quadratic);// 0.032f
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr+".initialized").c_str()), activeState);
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr+".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr + ".position").c_str()), 1, value_ptr(position));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr + ".ambient").c_str()), 1, value_ptr(ambient));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr + ".diffuse").c_str()), 1, value_ptr(diffuse));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr + ".specular").c_str()), 1, value_ptr(specular));
+		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr + ".constant").c_str()), constant);// 1.0f
+		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr + ".linear").c_str()), linear);// 0.09f
+		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr + ".quadratic").c_str()), quadratic);// 0.032f
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr + ".initialized").c_str()), activeState);
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(pointLightStr + ".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(pointLightStr + ".color").c_str()), 1, value_ptr(color));
 		break;
 	case 2:
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr+".direction").c_str()), 1, value_ptr(direction));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr+".ambient").c_str()), 1, value_ptr(ambient));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr+".diffuse").c_str()), 1, value_ptr(diffuse));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr+".specular").c_str()), 1, value_ptr(specular));
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(dirLightStr+".initialized").c_str()), activeState);
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(dirLightStr+".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr + ".direction").c_str()), 1, value_ptr(direction));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr + ".ambient").c_str()), 1, value_ptr(ambient));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr + ".diffuse").c_str()), 1, value_ptr(diffuse));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr + ".specular").c_str()), 1, value_ptr(specular));
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(dirLightStr + ".initialized").c_str()), activeState);
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(dirLightStr + ".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(dirLightStr + ".color").c_str()), 1, value_ptr(color));
 		break;
 	case 3:
 		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".position").c_str()), 1, value_ptr(position));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr+".direction").c_str()), 1, value_ptr(direction));//vec3(0.0f, 1.0f, 0.0f)
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr+".ambient").c_str()), 1, value_ptr(ambient));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr+".diffuse").c_str()), 1, value_ptr(diffuse));
-		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr+".specular").c_str()), 1, value_ptr(specular));
-		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr+".cutOff").c_str()), glm::cos(cutOff));// glm::radians(12.5f)
-		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".constant").c_str()), constant);// 1.0f
-		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".linear").c_str()), linear);// 0.09f
-		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".quadratic").c_str()), quadratic);// 0.032f
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr+".initialized").c_str()), activeState);
-		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr+".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".direction").c_str()), 1, value_ptr(direction));//vec3(0.0f, 1.0f, 0.0f)
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".ambient").c_str()), 1, value_ptr(ambient));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".diffuse").c_str()), 1, value_ptr(diffuse));
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".specular").c_str()), 1, value_ptr(specular));
+		glUniform1f(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr + ".cutOff").c_str()), glm::cos(cutOff));// glm::radians(12.5f)
+		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr  + ".constant").c_str()), constant);// 1.0f
+		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr  + ".linear").c_str()), linear);// 0.09f
+		glUniform1f(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr  + ".quadratic").c_str()), quadratic);// 0.032f
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr + ".initialized").c_str()), activeState);
+		glUniform1i(glGetUniformLocation(_shader->GetShader(),  (GLchar*)(spotLightStr + ".id").c_str()), id);
+		glUniform3fv(glGetUniformLocation(_shader->GetShader(), (GLchar*)(spotLightStr + ".color").c_str()), 1, value_ptr(color));
 		break;
 	}
 }

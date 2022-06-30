@@ -15,11 +15,8 @@ Lightning::Lightning(Renderer* rend)
 	_quadratic = 0.0f;
 	_cutOff = 0.0f;
 	_active = false;
-}
 
-void Lightning::setLight()
-{
-	_rend->updateLight(_pos, _dir, _ambient, _diffuse, _specular, _constant, _linear, _quadratic, _cutOff, static_cast<unsigned int>(_lightType), _active, id);
+	_color = glm::vec3(0.4f);
 }
 
 void Lightning::initializePoint(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float linear, float quadratic)
@@ -35,6 +32,8 @@ void Lightning::initializePoint(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diff
 	_linear = linear;
 	_quadratic = quadratic;
 	_active = true;
+
+	_color = glm::vec3(0.4f);
 }
 
 void Lightning::initializeDirectional(glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
@@ -47,6 +46,8 @@ void Lightning::initializeDirectional(glm::vec3 dir, glm::vec3 ambient, glm::vec
 	_diffuse = diffuse;
 	_specular = specular;
 	_active = true;
+
+	_color = glm::vec3(0.4f);
 }
 
 void Lightning::initializeSpot(glm::vec3 pos, glm::vec3 dir, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutOff, float linear, float quadratic)
@@ -64,6 +65,8 @@ void Lightning::initializeSpot(glm::vec3 pos, glm::vec3 dir, glm::vec3 ambient, 
 	_linear = linear;
 	_quadratic = quadratic;
 	_active = true;
+
+	_color = glm::vec3(0.4f);
 }
 
 // -------------------------
@@ -83,9 +86,14 @@ void Lightning::setActiveState(bool newActiveState)
 	_active = newActiveState;
 }
 
+void Lightning::setColor(float r, float g, float b)
+{
+	_color = glm::vec3(r, g, b);
+}
+
 void Lightning::draw()
 {
-	setLight();
+	_rend->updateLight(_pos, _dir, _ambient, _diffuse, _specular, _constant, _linear, _quadratic, _cutOff, static_cast<unsigned int>(_lightType), _active, id, _color);
 }
 
 // -------------------------

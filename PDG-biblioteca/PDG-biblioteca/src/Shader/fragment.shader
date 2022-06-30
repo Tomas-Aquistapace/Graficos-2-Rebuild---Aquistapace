@@ -1,6 +1,7 @@
 #version 330 core
 
-struct Material {
+struct Material 
+{
 	vec3 diffuse;
 	vec3 specular;
 	float shininess;
@@ -16,23 +17,26 @@ struct Material {
 	sampler2D texture_height1;
 
 	bool useSpecularMaps;
-
 };
 
-struct MaterialResults {
+struct MaterialResults 
+{
 	vec3 diffuse;
 	vec3 specular;
 	vec3 ambient;
 	float shininess;
 };
 
-struct Light {
+struct Light 
+{
 	vec3 position;
 	vec3 direction;
 
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	
+	vec3 color;
 
 	float constant;
 	float linear;
@@ -78,6 +82,7 @@ uniform bool isModel;
 void main()
 {
 	vec4 texColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	vec3 color = vec3(0.0f, 0.0f, 0.0f);
 
 	if (isModel)
 	{
@@ -153,7 +158,7 @@ vec3 calculateLight()
 
 	vec3 lightResult = ambientLight + diffuseFinal + specular;
 
-	return lightResult;
+	return lightResult * light.color;
 }
 
 vec3 calculateDirLight(int index)
@@ -181,7 +186,7 @@ vec3 calculateDirLight(int index)
 
 	vec3 lightResult = ambientLight + diffuseFinal + specular;
 
-	return lightResult;
+	return lightResult * dirLight[index].color;
 }
 
 vec3 calculatePointLight(int index)
@@ -217,7 +222,7 @@ vec3 calculatePointLight(int index)
 
 	vec3 lightResult = ambientLight + diffuseFinal + specular;
 
-	return lightResult;
+	return lightResult * pointLight[index].color;
 
 }
 
@@ -253,10 +258,11 @@ vec3 calculateSpotLight(int index)
 
 		diffuseFinal *= attenuation;
 		specular *= attenuation;
-
 	}
+
 	vec3 lightResult = ambientLight + diffuseFinal + specular;
-	return lightResult;
+
+	return lightResult * spotLight[index].color;
 
 }
 

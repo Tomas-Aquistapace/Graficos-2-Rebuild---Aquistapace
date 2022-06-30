@@ -2,24 +2,36 @@
 #include "Exports.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "Model.h"
 #include "stb_image.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma);
+struct MyModel
+{
+	vector<meshTexture> textures_loaded;
+	vector<Mesh> meshes;
 
-class ENGINE_API modelImporter
+	//bool gammaCorrection;
+	bool hasSpecularMaps;
+
+	Renderer* renderer;
+};
+
+class ENGINE_API ModelImporter
 {
 private:
+	void processNode(aiNode* node, const aiScene* scene, MyModel& model);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene, MyModel& model);
+	vector<meshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName, MyModel& model);
+
+	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma);
+	
 	string directory;
-	void processNode(aiNode* node, const aiScene* scene);
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	vector<meshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 
 public:
-	~modelImporter();
-	vector<Model*> models_Loaded;
-	void loadModel(string const& path, bool flipUVs, Renderer* rend);
+	void loadModel(string const& path, bool flipUVs, MyModel& model);
+
+	//~modelImporter();
+	//vector<Model*> models_Loaded;
 };

@@ -81,13 +81,13 @@
     <ClInclude Include="src\Model.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="src\modelImporter.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="src\Shader\Shader.h">
       <Filter>Archivos de encabezado\Shader</Filter>
     </ClInclude>
     <ClInclude Include="src\LightManager.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelImporter.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,13 +149,13 @@
     <ClCompile Include="src\Model.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\modelImporter.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shader\Shader.cpp">
       <Filter>Archivos de encabezado\Shader</Filter>
     </ClCompile>
     <ClCompile Include="src\LightManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelImporter.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
